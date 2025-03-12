@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
   ToolSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+import express from "express";
 import fs from "fs/promises";
 import path from "path";
 import { z } from "zod";
@@ -598,5 +599,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 // Connect to transport and start the server
-const transport = new StdioServerTransport();
-await server.connect(transport);
+// const transport = new StdioServerTransport();
+// await server.connect(transport);
+
+// ... set up server resources, tools, and prompts ...
+
+const app = express();
+
+let transport: SSEServerTransport;
+
+app.get("/sse", async (req, res) => {
+  transport = new SSEServerTransport("/messages", res);
+  await server.connect(transport);
+});
+
+app.post("/messages", async (req, res) => {
+  await transport.handlePostMessage(req, res);
+});
+
+app.listen(3001);
