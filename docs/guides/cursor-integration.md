@@ -1,82 +1,112 @@
 ---
 title: Cursor Integration Guide
-description: Guide for integrating the MCP Docs Service with Cursor
+description: Guide for integrating MCP Docs Service with Cursor
 author: Claude
-date: 2023-03-14T00:00:00.000Z
+date: 2024-03-12T00:00:00.000Z
 tags:
   - guide
-  - integration
   - cursor
+  - integration
 status: published
 order: 3
 ---
 
 # Cursor Integration Guide
 
-This guide explains how to integrate the MCP Docs Service with Cursor to provide documentation management capabilities to your LLM workflows.
+This guide explains how to integrate the MCP Docs Service with Cursor to enable AI-powered documentation management.
 
-## Quick Start with npx
+## Prerequisites
 
-The easiest way to use the MCP Docs Service is with `npx`, which allows you to run the package without installing it globally:
+- [Cursor](https://cursor.sh/) installed on your machine
+- A project with documentation in markdown format
+
+## Setting Up MCP Docs Service in Cursor
+
+To integrate MCP Docs Service with Cursor, you need to configure it in your project's `.cursor/mcp.json` file.
+
+1. Create a `.cursor` directory in your project root if it doesn't exist:
 
 ```bash
-npx mcp-docs-service /path/to/your/docs
+mkdir -p .cursor
 ```
 
-This will start the MCP Docs Service and make it available for Cursor to connect to.
+2. Create or edit the `mcp.json` file in the `.cursor` directory:
 
-## Setting Up in Cursor
+```bash
+touch .cursor/mcp.json
+```
 
-To integrate the MCP Docs Service with Cursor, you need to configure it in your Cursor workspace:
-
-1. Create a `.cursor/mcp.json` file in your project root with the following content:
+3. Add the following configuration to the `mcp.json` file:
 
 ```json
 {
-  "docs-manager": {
-    "command": "npx mcp-docs-service docs",
-    "tools": [
-      {
-        "name": "read_document",
-        "description": "Read a markdown document and extract its content and metadata"
-      },
-      {
-        "name": "list_documents",
-        "description": "List all markdown documents in a directory"
-      },
-      {
-        "name": "get_structure",
-        "description": "Get the structure of the documentation directory"
-      },
-      {
-        "name": "get_navigation",
-        "description": "Get the navigation structure for the documentation"
-      },
-      {
-        "name": "get_docs_knowledge_base",
-        "description": "Create a comprehensive knowledge base of documentation for LLM context"
-      },
-      {
-        "name": "write_document",
-        "description": "Write content to a markdown document with frontmatter"
-      },
-      {
-        "name": "edit_document",
-        "description": "Apply edits to a markdown document while preserving frontmatter"
-      },
-      {
-        "name": "delete_document",
-        "description": "Delete a markdown document"
-      },
-      {
-        "name": "search_documents",
-        "description": "Search for markdown documents matching criteria"
-      },
-      {
-        "name": "check_documentation_health",
-        "description": "Check the health of documentation and identify issues"
-      }
-    ]
+  "mcpServers": {
+    "docs-manager": {
+      "command": "npx",
+      "args": ["-y", "mcp-docs-service", "/path/to/your/docs"]
+    }
   }
 }
 ```
+
+Replace `/path/to/your/docs` with the path to your documentation directory. This can be a relative path (e.g., `./docs`) or an absolute path.
+
+Alternatively, you can use the flag-based format:
+
+```json
+{
+  "mcpServers": {
+    "docs-manager": {
+      "command": "npx",
+      "args": ["-y", "mcp-docs-service", "--docs-dir", "/path/to/your/docs"]
+    }
+  }
+}
+```
+
+Both formats are supported as of version 0.2.8.
+
+## Using with MCP Inspector
+
+If you're using the MCP Inspector to test the service, you can use the special `mcp-docs-inspector` entry point which is designed to work better with the MCP Inspector:
+
+```json
+{
+  "mcpServers": {
+    "docs-manager": {
+      "command": "npx",
+      "args": ["-y", "mcp-docs-inspector", "/path/to/your/docs"]
+    }
+  }
+}
+```
+
+This entry point handles the argument format used by the MCP Inspector more reliably.
+
+## Using MCP Docs Service in Cursor
+
+Once you've configured the MCP Docs Service, you can use it in Cursor by asking Claude to perform documentation-related tasks.
+
+Here are some examples of what you can ask Claude to do:
+
+- "Create a new documentation page for our API authentication"
+- "Update the installation guide to include the new configuration options"
+- "Find all documentation related to user authentication"
+- "Generate a navigation structure for our documentation"
+- "Check the health of our documentation and identify any issues"
+
+Claude will use the MCP Docs Service to perform these tasks, making it easy to manage your documentation without leaving your IDE.
+
+## Troubleshooting
+
+If you encounter issues with the MCP Docs Service in Cursor, try the following:
+
+1. **Check your configuration**: Make sure the path to your documentation directory is correct in the `mcp.json` file.
+
+2. **Verify the docs directory exists**: The documentation directory must exist before you can use the MCP Docs Service.
+
+3. **Check Cursor logs**: Cursor logs may contain information about any errors that occurred when trying to use the MCP Docs Service.
+
+4. **Restart Cursor**: Sometimes, restarting Cursor can resolve issues with MCP services.
+
+For more detailed troubleshooting, see the [Troubleshooting Guide](troubleshooting.md).

@@ -2,6 +2,73 @@
 
 All notable changes to the MCP Docs Service will be documented in this file.
 
+## [0.2.12] - 2024-05-15
+
+### Fixed
+
+- Fixed MCP Inspector integration by preventing non-JSON output to stdout
+- Improved logging to use stderr for diagnostic messages
+- Ensured wrapper script is included in the published package
+
+## [0.2.11] - 2024-05-15
+
+### Fixed
+
+- Fixed MCP Inspector wrapper script to use ES module syntax
+- Improved compatibility with MCP Inspector
+
+## [0.2.10] - 2024-05-15
+
+### Added
+
+- Added `mcp-docs-inspector` entry point for better compatibility with MCP Inspector
+- Updated documentation with instructions for using MCP Inspector
+
+### Fixed
+
+- Fixed issue with MCP Inspector argument parsing
+
+## [0.2.9] - 2024-05-15
+
+### Fixed
+
+- Enhanced CLI argument handling to support both positional and flag-based formats
+- Updated Cursor integration documentation to show both supported formats
+- Fixed issue with MCP Inspector integration
+
+## [0.2.8] - 2024-05-15
+
+### Fixed
+
+- Fixed MCP configuration to use correct CLI argument format
+- Updated documentation to use correct CLI argument format
+- Fixed issue with Cursor integration
+
+## [0.2.7] - 2024-05-15
+
+### Fixed
+
+- Fixed CLI argument handling to properly support flags
+- Updated MCP configuration to use node directly for local development
+- Improved documentation for Cursor integration
+
+## [0.2.6] - 2024-05-15
+
+### Added
+
+- Added `--health-check` CLI flag for running documentation health checks
+- Added comprehensive documentation for the health check feature
+- Added npm script for running health checks
+- Updated README with health check information
+
+## [0.2.5] - 2024-05-15
+
+### Fixed
+
+- Fixed NPX usage without specifying a docs directory
+- Added support for using the default docs directory in the current working directory
+- Improved error handling for missing docs directory
+
 ## [0.2.4] - 2024-05-15
 
 ### Fixed
