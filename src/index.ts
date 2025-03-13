@@ -727,13 +727,16 @@ const app = express();
 let transport: SSEServerTransport | null = null;
 
 app.get("/sse", async (req, res) => {
+  console.log("SSE connection initiated");
   transport = new SSEServerTransport("/messages", res);
   await server.connect(transport);
+  console.log("SSE connection established");
 });
 
 app.post("/messages", async (req, res) => {
   if (transport) {
-    transport.handlePostMessage(req, res);
+    console.log("Received POST request to /messages");
+    await transport.handlePostMessage(req, res);
   }
 });
 
