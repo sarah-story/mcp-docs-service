@@ -724,7 +724,7 @@ if (runHealthCheck) {
 
 const app = express();
 
-let transport: SSEServerTransport;
+let transport: SSEServerTransport | null = null;
 
 app.get("/sse", async (req, res) => {
   transport = new SSEServerTransport("/messages", res);
@@ -732,7 +732,9 @@ app.get("/sse", async (req, res) => {
 });
 
 app.post("/messages", async (req, res) => {
-  await transport.handlePostMessage(req, res);
+  if (transport) {
+    transport.handlePostMessage(req, res);
+  }
 });
 
 app.get("/health", async (req, res) => {
