@@ -735,4 +735,10 @@ app.post("/messages", async (req, res) => {
   await transport.handlePostMessage(req, res);
 });
 
+app.get("/health", async (req, res) => {
+  return res.status(200).json({
+    status: "ok",
+  });
+});
+
 app.listen(3001);
